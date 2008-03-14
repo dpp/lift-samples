@@ -8,7 +8,7 @@
   <name>unconference</name>
   <inceptionYear>2007</inceptionYear>
   <properties>
-    <scala.version>2.7.0-rc3</scala.version>
+    <scala.version>2.7.0</scala.version>
   </properties>
 
   <repositories>
@@ -42,7 +42,32 @@
     <dependency>
       <groupId>net.liftweb</groupId>
       <artifactId>lift-core</artifactId>
-      <version>0.6-SNAPSHOT</version>
+      <version>0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-amqp</artifactId>
+      <version>0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-facebook</artifactId>
+      <version>0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-textile</artifactId>
+      <version>0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-webkit</artifactId>
+      <version>0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-xmpp</artifactId>
+      <version>0.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.derby</groupId>
@@ -74,6 +99,11 @@
       <version>${scala.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>8.2-504.jdbc4</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -100,7 +130,7 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <configuration>
           <contextPath>/</contextPath>
-          <scanIntervalSeconds>5</scanIntervalSeconds>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
         </configuration>
       </plugin>
       <plugin>

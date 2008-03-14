@@ -15,16 +15,10 @@
 <div class="container">
   <!--begin header-->
   <div id="header">
-	<a href="#" class="logotype"></a>
+	<a href="/" class="logotype"></a>
     <!-- begin top_menu -->
     <div id="top_menu">
-      <ul class="menu">
-        <li><a href="#" class="current"><span>Home</span></a></li>
-	<li><a href="#"><span>News</span></a></li>
-        <li><a href="#"><span>Sessions</span></a></li>
-        <li><a href="#"><span>Feedback</span></a></li>
-        <li><a href="#" class="last-link"><span>Community</span></a></li>
-      </ul>
+    <lift:UnconfMenu.menu />
     </div>
     <!-- end top menu -->
     <!-- begin search form -->
@@ -68,12 +62,13 @@
         </div>
 
 		<!-- begin sign in -->
+	<lift:SignIn.display_login>
         <div class="sign-in column block">
 	  <h3><a href="/register">Register</a></h3>
-          <h3>Sign In</h3>
-          <form action="" method="post">
+          <h3>Please Sign In</h3>
+          <form action="/login" method="post">
             <p>
-              <input type="text" class="title" name="username" value="Login" />
+              <input type="text" class="title" name="username" value="Email" />
 	      <input type="password" class="title" name="password" value="" />
             </p>
 	    <p>
@@ -82,7 +77,13 @@
 	    </p>
           </form>
         </div>
-	<!-- end sign in -->		
+	</lift:SignIn.display_login>
+	
+	 <div class="error_report"><lift:snippet type="error_report">
+	    <lift:error_class>error_rpt_error</lift:error_class>
+	    <lift:warning_class>error_rpt_warning</lift:warning_class>
+	    <lift:notice_class>error_rpt_notice</lift:notice_class>
+	    </lift:snippet></div>
       </div>
       <!-- end right part -->
     </div>
