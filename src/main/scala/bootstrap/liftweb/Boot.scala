@@ -20,7 +20,7 @@ class Boot {
     if (!DB.jndiJdbcConnAvailable_?) DB.defineConnectionManager(DefaultConnectionIdentifier, DBVendor)
     // where to search snippet
     LiftRules.addToPackages("com.liftcode.unconference")     
-    Schemifier.schemify(true, Log.infoF _, User, Entry)
+    Schemifier.schemify(true, Log.infoF _, User, Entry, Feedback)
     
     val areas = Entry.areas
     

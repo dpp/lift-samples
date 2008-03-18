@@ -42,7 +42,7 @@ a.logotype {
 }
 
 #top_menu  {
-  width:100%;
+  width:650px;
   height:40px;
   margin:43px 0 0 0;
   padding:0;
@@ -131,7 +131,7 @@ a.last-link:hover span, a.last-link.current span {
 #main {
   min-height:350px;
   height:auto!important;
-  height:350px;
+  /* height:350px; */
   background:url(../images/bk_content.gif) repeat-y left top;
   float:left;
   clear:both;
@@ -154,6 +154,7 @@ a.last-link:hover span, a.last-link.current span {
   float:left;
   width:710px;
   padding:10px 0 10px 20px;
+  position: relative;
 }
 
 /*Footer*/
@@ -168,8 +169,9 @@ a.last-link:hover span, a.last-link.current span {
 }
 #footer p {
   margin:5px 12px;
-  padding:0;
-  float:left
+  padding: 3px;
+  float: none;
+  text-align: center ! important;
 }
 p.right {
   float:right!important;
@@ -234,4 +236,12 @@ ul.inline a {
 
 .sform input {
 	display: block;
+}
+
+.sform textarea {
+	display: block;
+}
+
+p img {
+	float: none ! important; 
 }

@@ -33,11 +33,10 @@ class Wiki {
     {
       S.textarea(revised.text,s => revised.text(s))
     }
-    
+    <br/>
     {
       S.submit("Save", s => {revised.save; redirectTo("/"+cat+"/"+urlEncode(page))})
     }
-    
     </div>
   }) match {
     case Full(x) => x
