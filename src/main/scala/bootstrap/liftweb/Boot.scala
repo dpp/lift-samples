@@ -29,35 +29,55 @@ class Boot {
     S.addAround(User.requestLoans)
     
     LiftRules.addDispatchBefore {
-      case RequestMatcher(s, ParsePath("login" :: Nil, _, _), _, _) => Login.login
-      case RequestMatcher(s, ParsePath("logout" :: Nil, _, _), _, _) => Login.logout
+      case RequestMatcher(_, ParsePath("login" :: Nil, _, _), _, _) => Login.login
+      case RequestMatcher(_, ParsePath("logout" :: Nil, _, _), _, _) => Login.logout
+      case RequestMatcher(r, _, _, _) if r.uri.endsWith("/home/index") => 
+      ignore => Full(RedirectResponse(r.updateWithContextPath("/")))
       
+      case RequestMatcher(r, ParsePath("redirect_to" :: "edit" :: which :: page :: _, _, _), _, _) =>
+      ignore => Full(RedirectResponse(r.updateWithContextPath("/"+which+"/edit/"+page)))
+      
+      case RequestMatcher(r, ParsePath("go" :: "home" :: _, _, _), _, _) =>
+      ignore => Full(RedirectResponse(r.updateWithContextPath("/")))
     }
     
-    LiftRules.addRewriteBefore {
+    LiftRules.addRewriteBefore {      
+      case RewriteRequest(ParsePath(which :: "add" :: Nil, _,_), _, httpReq) 
+      if (which == Entry.News || which == Entry.Sessions) && httpReq.getParameter("name") != null &&
+      httpReq.getParameter("name").length > 3 =>
+      RewriteResponse( List("redirect_to", "edit", which, urlEncode(httpReq.getParameter("name"))))
+      
+      case RewriteRequest(ParsePath(which :: "add" :: _, _,_), _, httpReq) 
+      =>
+      RewriteResponse( List("go", "home"))
+
       case RewriteRequest(ParsePath("index" :: Nil, _,_), _, _) =>
-      RewriteResponse( List("wiki", "view", "home", "index"))
+      RewriteResponse( List("the_wiki", "view", "home", "index"))
       
       case RewriteRequest(ParsePath(which :: Nil, _,_), _, _) 
       if areas.contains(which) =>
-      RewriteResponse( List("wiki", "main"), Map("category" -> which))
+      RewriteResponse( List("the_wiki", "main"), Map("category" -> which))
       
       case RewriteRequest(ParsePath("edit" :: Nil, _,_), _, _) |
       RewriteRequest(ParsePath("home" :: "edit" :: Nil, _,_), _, _)      
       =>
-      RewriteResponse( List("wiki", "edit", "home", "index"))
+      RewriteResponse( List("the_wiki", "edit", "home", "index"))
       
       case RewriteRequest(ParsePath(which :: what :: Nil, _,_), _, _) 
       if areas.contains(which) =>
-      RewriteResponse( List("wiki", "view", which, what))
+      RewriteResponse( List("the_wiki", "view", which, what))
       
       case RewriteRequest(ParsePath(which :: "edit" :: what :: Nil, _,_), _, _) 
       if areas.contains(which) =>
-      RewriteResponse( List("wiki", "edit", which, what))
+      RewriteResponse( List("the_wiki", "edit", which, what))
       
-      case RewriteRequest(ParsePath("wiki" :: cmd :: category :: page :: Nil, _,_), _, _)
-      if (cmd == "view" || cmd == "edit") && areas.contains(category) =>
-      RewriteResponse(List("wiki", cmd), Map("category" -> category, "page" -> urlDecode(page)) )
+            case RewriteRequest(ParsePath(which :: "history" :: what :: Nil, _,_), _, _) 
+      if areas.contains(which) =>
+      RewriteResponse( List("the_wiki", "history", which, what))
+      
+      case RewriteRequest(ParsePath("the_wiki" :: cmd :: category :: page :: Nil, _,_), _, _)
+      if (cmd == "view" || cmd == "edit" || cmd == "history") && areas.contains(category) =>
+      RewriteResponse(List("the_wiki", cmd), Map("category" -> category, "page" -> urlDecode(page)) )
       
     }
   }

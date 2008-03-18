@@ -20,7 +20,7 @@ class Wiki {
   cat <- S.param("category") ?~ "No category";
   page <- S.param("page") ?~ "No Page";
   val from = S.referer ?~ "Invalid Referrer";
-  val actual = Entry.locate(cat, page)) yield {
+  val actual = entry(cat, page, S.param("id"))) yield {
     val revised = Entry.create.name(page).category(cat).author(user).
     text(actual.map(_.text.is).openOr(""))
     <div>
@@ -52,14 +52,25 @@ class Wiki {
     <div>
     {
       cat match {
-        case Entry.News => <p>News and updates related to the Scala <i>lift</i> off</p>
-        case Entry.Sessions => <p>Sessions that people are proposing for the Scala <i>lift</i> off</p>
+        case Entry.News => 
+        <p>News and updates related to the Scala <i>lift</i> off {
+          if (canEdit)
+          <span>&nbsp;Add: <form style="display: inline" action="/news/add"><input name="name" type="text"/><input type="submit" value="New"/></form>
+          </span>
+          else Text("")
+        }</p> 
+        case Entry.Sessions => <p>Sessions that people are proposing for the Scala <i>lift</i> off{
+          if (canEdit)
+          <span>&nbsp;Add: <form style="display: inline" action="/sessions/add"><input name="name" type="text"/><input type="submit" value="New"/></form>
+          </span>
+          else Text("")
+        }</p>
         case Entry.Community => <p>Folks who have registered to attend the Scala <i>lift</i> off</p>
         case _ => Text("")
       }
     }
     {
-      Entry.currentForCategory(cat).map(e => <a href={"/"+e.category+"/"+urlEncode(e.name)}>{e.name}</a><br/>)
+      Entry.currentForCategory(cat).map(e => <xml:group><a href={"/"+e.category+"/"+urlEncode(e.name)}>{e.name}</a> &nbsp;<span style="font-size: 0.8em"><a href={"/"+e.category+"/history/"+urlEncode(e.name)}>History</a></span><br/></xml:group>)
     }
     </div>
   }) match {
@@ -73,16 +84,29 @@ class Wiki {
   private def writeUrl(category: String)(what: TextileParser.WikiURLInfo): (String, NodeSeq, Option[String]) = 
   what match {
     case TextileParser.WikiURLInfo(text, Some(cat)) if Entry.areas.contains(cat) =>
-    ("/"+cat+"/"+urlEncode(text), Text(text), None)
+    ("/"+cat+"/"+urlEncode(text), Text(text), if (Entry.locate(cat, text).isDefined) None else
+    Some("need_edit"))
     case TextileParser.WikiURLInfo(text, _) =>
-    if (Entry.locate(category, text).isDefined) ("/"+category+"/"+urlEncode(text), Text(text), None)
-    else ("/wki/"+urlEncode(text), Text(text), None)
+    ("/"+category+"/"+urlEncode(text), Text(text), if (Entry.locate(category, text).isDefined) None else
+    Some("need_edit"))
+  }
+  
+  private def entry(cat: String, name: String, id: Can[String]): Can[Entry] = 
+  id match {
+    case Full(id) =>
+    Entry.find(id).flatMap{
+      case e if e.category.is == cat && e.name.is == name => Full(e)
+      case _ => Empty
+    }
+    case _ => Entry.locate(cat, name)
   }
   
   def show: NodeSeq =  {
     (for (cat <- S.param("category") ?~ "No category";
     page <- S.param("page") ?~ "No Page";
-    actual <- Entry.locate(cat, page)) yield {
+    val actual = entry(cat, page, S.param("id"))) yield {
+      actual match {
+        case Full(actual) =>
       <div class="wiki_out">
       {
         TextileParser.toHtml(actual.text, Some(writeUrl(cat)))
@@ -90,16 +114,41 @@ class Wiki {
       <br/>
       <br/>
       {
-        if (canEdit) <p><a href={"/"+cat+"/edit/"+urlEncode(page)}><button>edit</button></a></p>
+        if (canEdit) <p><a href={actual.editUrl}><button>edit</button></a></p>
         else Text("")
       }
+      <a href={"/"+cat+"/history/"+urlEncode(page)}>History</a>
       </div>
+      case _ if User.currentUser.map(_.validated.is).openOr(false) => redirectTo(Entry.editUrl(cat, page))
+      case _ => error("Page not found"); redirectTo("/")
+      }
     }) match {
       case Full(x) => x
       case Failure(msg, _, _) => error(msg); redirectTo("/")
-      case _ if User.currentUser.map(_.validated.is).openOr(false) => redirectTo("/"+S.param("category").open_! +
-      "/edit/"+
-      urlEncode(S.param("page").open_!))
+      case _ => error("Page not found"); redirectTo("/")
+    }
+  }
+  
+  def history: NodeSeq = {
+    (for (cat <- S.param("category") ?~ "No category";
+    page <- S.param("page") ?~ "No Page";
+    val actual = Entry.findAll(By(Entry.category, cat), By(Entry.name, page), OrderBy(Entry.createdAt, false))) yield {
+      actual match {
+        case Nil => <b>No entries found for {page} in {cat}</b>
+        case xs =>
+        <p>
+        History for {page} in {cat}
+        <ul>
+        {
+          xs.map(e => <li><a href={"/"+cat+"/"+urlEncode(page)+"?id="+e.id}>{new java.util.Date(e.createdAt.is).toString}</a> by 
+          <a href={"/community/"+urlEncode(e.author.obj.map(_.wikiName.is).openOr(""))}>{e.author.obj.map(_.niceName).openOr("")}</a></li>)
+        }
+        </ul>
+        </p>
+      }
+    }) match {
+      case Full(x) => x
+      case Failure(msg, _, _) => error(msg); redirectTo("/")
       case _ => error("Page not found"); redirectTo("/")
     }
   }

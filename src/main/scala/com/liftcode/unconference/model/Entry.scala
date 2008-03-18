@@ -63,9 +63,11 @@ object Entry extends Entry with KeyedMetaMapper[Long, Entry] {
   val News = "news"
   val Sessions = "sessions"
   val Community = "community"
-  val Wiki = "wki"
+  val Wiki = "wiki"
   val Home = "home"
   val areas = List(News, Sessions, Community, Wiki, Home)
+  
+  def editUrl(cat: String, name: String): String = "/"+cat+"/edit/"+urlEncode(name)
 }
 
 /**
@@ -94,5 +96,5 @@ class Entry extends KeyedMapper[Long, Entry] {
   
   object author extends MappedLongForeignKey(this, User)
   
-  
+  def editUrl: String = Entry.editUrl(category, name)
 }

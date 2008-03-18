@@ -65,4 +65,6 @@ class User extends MegaProtoUser[User] {
   
   def invalid_? = false
   def invalidReason = ""
+  
+  override def niceName = firstName+" "+lastName
 }
