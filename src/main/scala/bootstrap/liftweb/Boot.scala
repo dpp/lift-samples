@@ -35,10 +35,10 @@ class Boot {
       ignore => Full(RedirectResponse(r.updateWithContextPath("/")))
       
       case RequestMatcher(r, ParsePath("redirect_to" :: "edit" :: which :: page :: _, _, _), _, _) =>
-      ignore => Full(RedirectResponse(r.updateWithContextPath("/"+which+"/edit/"+page)))
+      ignore => Full(RedirectResponse("/"+which+"/edit/"+page))
       
       case RequestMatcher(r, ParsePath("go" :: "home" :: _, _, _), _, _) =>
-      ignore => Full(RedirectResponse(r.updateWithContextPath("/")))
+      ignore => Full(RedirectResponse("/"))
     }
     
     LiftRules.addRewriteBefore {      
