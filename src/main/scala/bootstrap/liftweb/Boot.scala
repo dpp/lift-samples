@@ -32,7 +32,7 @@ class Boot {
       case RequestMatcher(_, ParsePath("login" :: Nil, _, _), _, _) => Login.login
       case RequestMatcher(_, ParsePath("logout" :: Nil, _, _), _, _) => Login.logout
       case RequestMatcher(r, _, _, _) if r.uri.endsWith("/home/index") => 
-      ignore => Full(RedirectResponse(r.updateWithContextPath("/")))
+      ignore => Full(RedirectResponse("/"))
       
       case RequestMatcher(r, ParsePath("redirect_to" :: "edit" :: which :: page :: _, _, _), _, _) =>
       ignore => Full(RedirectResponse("/"+which+"/edit/"+page))
