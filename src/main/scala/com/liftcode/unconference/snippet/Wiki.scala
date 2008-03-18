@@ -83,7 +83,7 @@ class Wiki {
     (for (cat <- S.param("category") ?~ "No category";
     page <- S.param("page") ?~ "No Page";
     actual <- Entry.locate(cat, page)) yield {
-      <div>
+      <div class="wiki_out">
       {
         TextileParser.toHtml(actual.text, Some(writeUrl(cat)))
       }

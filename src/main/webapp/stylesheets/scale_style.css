@@ -245,3 +245,9 @@ ul.inline a {
 p img {
 	float: none ! important; 
 }
+
+.wiki_out p {
+	font-family: serif;
+	font-size: 1.2em;
+	margin-top: 6px;
+}

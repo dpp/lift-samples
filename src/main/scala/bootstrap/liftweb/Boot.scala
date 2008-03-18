@@ -17,6 +17,8 @@ import snippet._
 */
 class Boot {
   def boot {
+    DefaultConnectionIdentifier.jndiName = "unconf"
+    
     if (!DB.jndiJdbcConnAvailable_?) DB.defineConnectionManager(DefaultConnectionIdentifier, DBVendor)
     // where to search snippet
     LiftRules.addToPackages("com.liftcode.unconference")     
@@ -24,6 +26,7 @@ class Boot {
     
     val areas = Entry.areas
     
+    S.addAround(User.requestLoans)
     
     LiftRules.addDispatchBefore {
       case RequestMatcher(s, ParsePath("login" :: Nil, _, _), _, _) => Login.login
