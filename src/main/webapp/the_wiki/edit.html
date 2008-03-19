@@ -1,7 +1,8 @@
 <lift:surround with="default" at="content">
 
+<div style="width: 600px;">
     <div id="textile_help" style="position: absolute; width: 600px; top: 10px; display: none; left: 445px; height: 500px; border: black 3px ridge; overflow: auto; background-color: white;">
-    <iframe id="t2" style="width: 100%; height: 60%;" src="http://www.hobix.com/textile/quick.html"/>
+    <iframe id="t2" style="width: 100%; height: 60%;" src="http://www.hobix.com/textile/quick.html"> </iframe>
     
     <p>To display a picture, use:<br/>
     <code>!http://url_of_picture!</code>
@@ -20,9 +21,13 @@
     
     <button onclick="document.getElementById('textile_help').style.display = 'none'; ">Close</button>
     </div>
-    
     <div style="float: right"><button onclick="document.getElementById('textile_help').style.display = 'block'; ">Formatting Help</button></div>
+    
 
 <lift:Wiki.edit form="POST"/>
+
+
+    
+</div>
 </lift:surround>
 

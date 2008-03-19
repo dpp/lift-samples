@@ -114,7 +114,7 @@ class Wiki {
       <br/>
       <br/>
       {
-        if (canEdit) <p><a href={actual.editUrl}><button>edit</button></a></p>
+        if (canEdit) <p><form action={actual.editUrl}><input type="submit" value="Edit"/></form></p>
         else Text("")
       }
       <a href={"/"+cat+"/history/"+urlEncode(page)}>History</a>

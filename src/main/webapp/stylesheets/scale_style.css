@@ -31,14 +31,22 @@ p {
   position:relative;
   overflow:hidden;
 }
-a.logotype {
-  width:173px;
+
+.logotype {
+  /*width:173px;
   height:72px;
   display:block;
   text-decoration:none;
   background: url(../images/logotype.jpg) no-repeat left top!important;
-  margin:10px 0 0 22px;
-  float:left;
+  */
+  /* margin:10px 0 0 22px; */
+  /*
+  position: absolute;
+  left: 10px;
+  top: 22px;
+  */
+  padding-left: 10px;
+  margin-top: 5px;
 }
 
 #top_menu  {
@@ -46,11 +54,13 @@ a.logotype {
   height:40px;
  /* margin:43px 0 0 0; */
   padding:0;
-  clear:both;
-  float:left;
+  /*clear:both; */
+ /* float:left; */
   font-size:1.0em;
-  position:relative;
+  position:absolute;
   z-index:12;
+  top: 82px;
+  left: 0px;
 
 }
 #top_menu ul { /* all lists */
@@ -135,6 +145,7 @@ a.last-link:hover span, a.last-link.current span {
   background:url(../images/bk_content.gif) repeat-y left top;
   float:left;
   clear:both;
+  width: 100%;
 }
 #content {
   background:url(../images/bk_main.gif) no-repeat left top;

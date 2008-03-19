@@ -1,5 +1,5 @@
 <lift:surround with="default" at="content">
-  <lift:Register.form form="POST">
+  <lift:Register.form>
   <register:first>
   <p>Welcome to the Scala <i>lift</i> off unconference.
   web site.</p>
@@ -82,20 +82,17 @@
   <p>
   Thanks! 
   <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-   <input type="hidden" name="cmd" value="_xclick"/>
-   <input type="hidden" name="business" value="info@worldwideconf.com"/>
-   <input type="hidden" name="item_name" value="Scala lift off"/>
+   <input type="hidden" name="cmd" value="_xclick"> </input>
+   <input type="hidden" name="business" value="info@worldwideconf.com"> </input>
+   <input type="hidden" name="item_name" value="Scala lift off"> </input>
    <register:item_number/>
-   <input type="hidden" name="amount" value="50.00"/>
-   <input type="hidden" name="no_shipping" value="2"/>
-   <input type="hidden" name="no_note" value="1"/>
-   <input type="hidden" name="currency_code" value="USD"/>
-   <input type="hidden" name="bn" value="IC_Sample"/>
-   <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" 
-   name="submit" alt="Make payments with payPal - it's fast, free and secure!"/>
-   <img alt="" 
-   src="https://www.paypal.com/en_US/i/scr/pixel.gif" 
-   width="1" height="1"/>
+   <input type="hidden" name="amount" value="50.00"> </input>
+   <input type="hidden" name="no_shipping" value="2"> </input>
+   <input type="hidden" name="no_note" value="1"> </input>
+   <input type="hidden" name="currency_code" value="USD"> </input>
+   <input type="hidden" name="bn" value="IC_Sample"> </input>
+   <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with payPal - it's fast, free and secure!"> </input>
+   <img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1"> </img>
    </form>
    </p>
 

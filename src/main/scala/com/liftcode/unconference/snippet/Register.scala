@@ -81,6 +81,11 @@ class Register extends StatefulSnippet {
   else Null
   
   def firstForm(body: NodeSeq): NodeSeq = 
+  <form method="POST" action={S.uri}>
+  {
+    S.hidden(ignore => this.registerThisSnippet)
+  }
+  {
   bind("register", body,
   "firstName" --> text(firstName, s => firstName = s.trim) % ie(firstName_err),
   "lastName" --> text(lastName, s => lastName = s.trim) % ie(lastName_err),
@@ -91,6 +96,7 @@ class Register extends StatefulSnippet {
   "edu" --> checkbox(edu, edu = _),
   "submit" --> submit("Register", validate _)
   )
+  }</form>
   
   def confirmEdu(body: NodeSeq): NodeSeq = body
   

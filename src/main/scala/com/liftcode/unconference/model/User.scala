@@ -9,6 +9,7 @@ import net.liftweb.util._
 object User extends User with MetaMegaProtoUser[User, User with KeyedMetaMapper[Long, User]] {
   override def dbTableName = "users" // define the DB table name
   
+  def superUser_? : Boolean = currentUser.map(_.superUser.is).openOr(false)
 }
 
 /**
