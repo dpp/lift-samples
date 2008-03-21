@@ -62,7 +62,7 @@ object Login {
       }
     }
     
-    Can(RedirectResponse(from))
+    Full(RedirectResponse(from))
   }
   
   def logout(r: RequestState) = {
@@ -71,6 +71,6 @@ object Login {
     User.logoutCurrentUser
     S.notice("Logged Out")
     
-    Can(RedirectResponse(from))
+    Full(RedirectResponse(from))
   }
 }
