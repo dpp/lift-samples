@@ -47,7 +47,7 @@ class Boot {
       httpReq.getParameter("name").length > 3 =>
       RewriteResponse( List("redirect_to", "edit", which, urlEncode(httpReq.getParameter("name"))))
       
-      case RewriteRequest(ParsePath(which :: "add" :: _, _,_), _, httpReq) 
+      case RewriteRequest(ParsePath(which :: "add" :: _, _,_), _, _) 
       =>
       RewriteResponse( List("go", "home"))
 

@@ -6,6 +6,7 @@ import model._
 import net.liftweb._
 import http._
 import S._
+import SHtml._
 import util._
 import Helpers._
 import mapper._
@@ -83,7 +84,7 @@ class Register extends StatefulSnippet {
   def firstForm(body: NodeSeq): NodeSeq = 
   <form method="POST" action={S.uri}>
   {
-    S.hidden(ignore => this.registerThisSnippet)
+    SHtml.hidden(ignore => this.registerThisSnippet)
   }
   {
   bind("register", body,

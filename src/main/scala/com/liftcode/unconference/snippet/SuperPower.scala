@@ -6,6 +6,7 @@ import model._
 import net.liftweb._
 import http._
 import S._
+import SHtml._
 import util._
 import Helpers._
 import mapper._
@@ -53,7 +54,7 @@ class SuperPower extends StatefulSnippet {
   <p>
   Validate a PayPal purchase
   <form action={S.uri} method="POST">
-  PayPal magic number: {S.text("", validatePaypal _)} 
+  PayPal magic number: {SHtml.text("", validatePaypal _)} 
   <input type="submit" value="Validate" />
   </form>
   </p>
@@ -61,9 +62,9 @@ class SuperPower extends StatefulSnippet {
   <p>
   Send email: <br />
   <form action={S.uri} method="POST">
-  Subject: {S.text(subject, subject = _)}<br/>
-  {S.textarea(msg, msg = _)}<br/>
-  To: {S.select(List("All", "Validated", "Unvalidated").map(s => (s,s)), Full("All"), sendMsg)}<br/>
+  Subject: {SHtml.text(subject, subject = _)}<br/>
+  {SHtml.textarea(msg, msg = _)}<br/>
+  To: {SHtml.select(List("All", "Validated", "Unvalidated").map(s => (s,s)), Full("All"), sendMsg)}<br/>
   <input type="submit" value="Send"/>
   </form>
   </p>

@@ -6,6 +6,7 @@ import model._
 import net.liftweb._
 import http._
 import S._
+import SHtml._
 import util._
 import Helpers._
 import mapper._
@@ -31,11 +32,11 @@ class Wiki {
     </p>
     
     {
-      S.textarea(revised.text,s => revised.text(s))
+      SHtml.textarea(revised.text,s => revised.text(s))
     }
     <br/>
     {
-      S.submit("Save", s => {revised.save; redirectTo("/"+cat+"/"+urlEncode(page))})
+      SHtml.submit("Save", s => {revised.save; redirectTo("/"+cat+"/"+urlEncode(page))})
     }
     </div>
   }) match {

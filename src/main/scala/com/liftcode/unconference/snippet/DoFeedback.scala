@@ -35,9 +35,9 @@ class DoFeedback extends StatefulSnippet {
   def doIt(in: NodeSeq): NodeSeq = 
   bind("feedback", in,
   "email" --> User.currentUser.map(u => <div>{u.email}</div>).
-  openOr(S.text(fb.email, s => fb.email(s))),
-  "feedback" --> S.textarea(fb.text, s => fb.text(s)),
-  "submit" --> S.submit("Please tell us", submitIt)
+  openOr(SHtml.text(fb.email, s => fb.email(s))),
+  "feedback" --> SHtml.textarea(fb.text, s => fb.text(s)),
+  "submit" --> SHtml.submit("Please tell us", submitIt)
   )
 }
 
