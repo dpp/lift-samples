@@ -34,6 +34,9 @@ class Boot {
       case RequestMatcher(r, _, _, _) if r.uri.endsWith("/home/index") => 
       ignore => Full(RedirectResponse("/"))
       
+      case RequestMatcher(r, ParsePath("attendees.txt" :: Nil, _, _), _, _) if User.superUser_? =>
+      ignore => Full(User.attendees)
+      
       case RequestMatcher(r, ParsePath("redirect_to" :: "edit" :: which :: page :: _, _, _), _, _) =>
       ignore => Full(RedirectResponse("/"+which+"/edit/"+page))
       

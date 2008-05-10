@@ -3,6 +3,9 @@ package com.liftcode.unconference.model
 import net.liftweb.mapper._
 import net.liftweb.util._
 
+import net.liftweb._
+import http._
+
 /**
 * The singleton that has methods for accessing the database
 */
@@ -10,6 +13,13 @@ object User extends User with MetaMegaProtoUser[User, User with KeyedMetaMapper[
   override def dbTableName = "users" // define the DB table name
   
   def superUser_? : Boolean = currentUser.map(_.superUser.is).openOr(false)
+  
+  def attendees: Response = {
+    val top = "First\tLast\temail\tvalidated\n"
+    val str = User.findAll.sort(_.lastName.toLowerCase < _.lastName.toLowerCase).
+    map(u => u.firstName+"\t"+u.lastName+"\t"+u.email+"\t"+u.validated).mkString(top, "\n", "")
+    Response(str.getBytes("UTF-8"), "Content-Type" -> "text/plain" :: Nil, Nil, 200)
+  }
 }
 
 /**

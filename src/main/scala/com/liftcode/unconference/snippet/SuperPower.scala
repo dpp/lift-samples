@@ -51,6 +51,7 @@ class SuperPower extends StatefulSnippet {
   <div>
   <p>Super Powers... use them <b>carefully</b></p>
     <br/>
+    
   <p>
   Validate a PayPal purchase
   <form action={S.uri} method="POST">
@@ -68,6 +69,7 @@ class SuperPower extends StatefulSnippet {
   <input type="submit" value="Send"/>
   </form>
   </p>
+  <p><a href="/attendees.txt">Attendees</a></p>
   </div>
   else
   S.redirectTo("/")
