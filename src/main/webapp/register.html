@@ -1,0 +1,104 @@
+<lift:surround with="default" at="content">
+  <lift:Register.form>
+  <register:first>
+  <p>Welcome to the Scala <i>lift</i> off unconference.
+  web site.</p>
+  
+  <p>The Scala <i>lift</i> off will be presentated on Saturday
+  May 10<sup>th</sup>, 2008 in San Francisco from 9am to 5pm.
+  Registration is $50 per person (or free if you're a student,
+  you must have a .edu email address.)  The conference includes
+  lunch and snacks as well as a Keynote address by Martin
+  Odersky, Scala's designer.</p>
+  <fieldset class="sform">
+  <legend>
+  Enter registration information
+  </legend>
+  <label>
+  First Name
+  <register:firstName/>
+  </label>
+  
+  <label>
+  Last Name
+  <register:lastName/>
+  </label>
+  
+  <label>
+  Email address
+  <register:email1/>
+  </label>
+  
+  <label>
+  Email address (repeat)
+  <register:email2/>
+  </label>
+  
+  <label>
+  Password (6 or more characters)
+  <register:pwd1/>
+  </label>
+  
+  <label>
+  Password (repeat)
+  <register:pwd2/>
+  </label>
+  
+  <label>
+  Check here if you are a student at an educational institution.
+  You must provide a .edu email address.
+  <register:edu/>
+  </label>
+  
+    <label>
+  <register:submit/>
+  </label>
+  
+  
+  </fieldset>
+  
+  </register:first>
+  
+  <register:edu>
+  <p>
+  Thank you for registering for the Scala <i>lift</i> off!  Within 24 hours,
+  your account will be validated and you'll receive confirmation email and you
+  will be able to add your profile to the <a href="/community">Community</a> page.
+  </p>
+  
+  <p>
+  In the mean time, please take a look at the <a href="/sessions">Sessions</a>.
+  </p>
+  </register:edu>
+  
+  <register:paypal>
+  <p>
+  Thank you for registering for the Scala <i>lift</i> off.  In order
+  to complete your registration, you must pay the $50 unconference registration fee.
+  Please click on the PayPal button in order to process your payment.  Within
+  24 hours of payment, you'll receive confirmation email and you will be able
+  to add your profile to the <a href="/community">Community</a> page.</p>
+  
+  <p>
+  Thanks! 
+  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+   <input type="hidden" name="cmd" value="_xclick"> </input>
+   <input type="hidden" name="business" value="info@worldwideconf.com"> </input>
+   <input type="hidden" name="item_name" value="Scala lift off"> </input>
+   <register:item_number/>
+   <input type="hidden" name="amount" value="50.00"> </input>
+   <input type="hidden" name="no_shipping" value="2"> </input>
+   <input type="hidden" name="no_note" value="1"> </input>
+   <input type="hidden" name="currency_code" value="USD"> </input>
+   <input type="hidden" name="bn" value="IC_Sample"> </input>
+   <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with payPal - it's fast, free and secure!"> </input>
+   <img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1"> </img>
+   </form>
+   </p>
+
+  </register:paypal>
+  
+  </lift:Register.form>
+  
+</lift:surround>
+

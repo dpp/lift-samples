@@ -1,0 +1,103 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:lift="http://liftweb.net/">
+<head>
+<title>Scala lift off</title>
+<!-- Framework CSS -->
+<link rel="stylesheet" href="/stylesheets/scale_style.css" type="text/css" />
+<!-- Framework CSS -->
+<link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" />
+<link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" />
+<!--[if IE]><link rel="stylesheet" href="../blueprint/lib/ie.css" type="text/css" media="screen, projection"><![endif]-->
+
+<link rel="stylesheet" href="/stylesheets/blueprint/plugins/fancy-type/fancy-type.css" type="text/css" />
+</head>
+<body>
+<!-- begin container -->
+<div class="container">
+  <!--begin header-->
+  <div id="header">
+	<a href="/"><img class="logotype"  alt="Scala lift off" src="/images/logotype.jpg" /></a>
+    <!-- begin top_menu -->
+    <div id="top_menu">
+    <lift:UnconfMenu.menu />
+    </div>
+    <!-- end top menu -->
+    <!-- begin search form -->
+    <div id="search_div">
+      <form name="headerSearchForm" method="get" action="/search">
+        <p>
+          <input type="text" name="what" value="" class="text" />
+          
+          <input type="image" src="/images/btn_search.gif" alt="search" />
+        </p>
+      </form>
+    </div>
+    <!--end search form -->
+  </div>
+  <!--end header-->
+  <!-- begin main -->
+  <div id="main">
+    <div id="content">
+      <!-- begin middle part -->
+      <div class="middle-part">
+	  <div class="column">
+	    <lift:bind name="content" />
+	  </div>
+      </div>
+      <!-- end middle part -->
+      <!-- begin right part -->
+      <div class="right-part">
+
+        <div class="column">
+          <h3 class="red">Platinum Sponsor</h3>
+	  <p class="block"><a href="http://zeroturnaround.com">ZeroTurnaround</a></p>
+          <h3 class="red">Gold Sponsors</h3>
+	  
+	  <p class="block"><a href="http://billfernandez.com/">Bill Fernandez Design</a></p>
+	  <p class="block"><a href="http://enthiosys.com/">Enthiosys</a></p>
+	  <p class="block"><a href="http://redmonk.com/">RedMonk</a></p>
+
+	  <h3 class="red">Bronze Sponsors</h3>
+	  <p class="block"><a href="http://alchim31.net/">David Bernard</a></p>
+	  <p class="block"><i><a href="http://liftweb.net">lift</a></i> committers</p>
+
+	  <h3 class="red">Media Sponsor</h3>
+	  <p class="block"><a href="http://artima.com/">Artima</a></p>
+        </div>
+
+		<!-- begin sign in -->
+	<lift:SignIn.display_login>
+        <div class="sign-in column block">
+	  <h3><a href="/register">Register</a></h3>
+          <h3>Please Sign In</h3>
+          <form action="/login" method="post">
+            <p>
+              <input type="text" class="title" name="username" value="Email" />
+	      <input type="password" class="title" name="password" value="" />
+            </p>
+	    <p>
+	      <input type="image" src="/images/btn_signin.gif"
+		     alt="signin" class="push-0" />
+	    </p>
+          </form>
+        </div>
+	</lift:SignIn.display_login>
+	
+	 <div class="error_report"><lift:Msgs>
+	    <lift:error_class>error_rpt_error</lift:error_class>
+	    <lift:warning_class>error_rpt_warning</lift:warning_class>
+	    <lift:notice_class>error_rpt_notice</lift:notice_class>
+	    </lift:Msgs></div>
+      </div>
+      <!-- end right part -->
+    </div>
+  </div>
+  <!-- end main -->
+  <!--begin footer-->
+  <div id="footer" class="clear">
+    <p>powered by <a href="http://liftweb.net"><i>lift</i></a> | Copyright &copy; 2008 WorldWide Conferencing, LLC | <a href="http://code.google.com/p/unconference/">Unconference Project</a></p>
+  </div>
+  <!--end footer-->
+</div>
+<!-- end container -->
+</body>
+</html>

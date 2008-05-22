@@ -1,0 +1,25 @@
+<lift:surround with="default" at="content">
+<p>
+Please let us know your comments, feedback, and criticism about
+this site and/or the Scala <i>lift</i> off in general.
+<fieldset class="sform">
+<legend>Please give us feedback</legend>
+<lift:DoFeedback form="POST">
+  <label>
+  Email address
+  <feedback:email />
+  </label>
+  
+  <label>
+  Your feedback
+  <feedback:feedback />
+  </label>
+  
+  <label>
+  <feedback:submit />
+  </label>
+</lift:DoFeedback>
+</fieldset>
+</p>
+</lift:surround>
+
