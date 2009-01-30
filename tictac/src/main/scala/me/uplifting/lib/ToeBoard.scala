@@ -1,4 +1,4 @@
-package me.uplifting.comet
+package me.uplifting.lib
 /**
  * Created by IntelliJ IDEA.
  * User: dpp
@@ -9,6 +9,7 @@ package me.uplifting.comet
 
 import net.liftweb._
 import http._
+import util._
 
 import scala.xml._
 
@@ -42,11 +43,21 @@ object ToeStyle {
 }
 
 case class Player(name: String) {
-  lazy val id = 
+  lazy val id = Helpers.nextFuncName
 }
 
-class ToeBoard(p1: String, p2: String) extends CometState[ToeDelta, ToeBoard] {
-  private var info: List[Option[Boolean]] = Nil
+object ToeBoard {
+  def Empty = new ToeBoard()
+}
+
+class ToeBoard extends CometState[ToeDelta, ToeBoard] {
+  private var player1: Option[Player] = None
+  private var player2: Option[Player] = None
+  private var info: Array[Option[Boolean]] = {
+    val ret = new Array[Option[Boolean]](9)
+    (0 until 9).foreach(i => ret(i) = None)
+    ret
+  }
 
   private def b(pos: Int): Node = info(pos) match {
     case Some(true) => Text("X")
@@ -63,9 +74,18 @@ class ToeBoard(p1: String, p2: String) extends CometState[ToeDelta, ToeBoard] {
           (a, b) => a + (if(b.isDefined) 1 else 0))) % 2 == 0)
   }
 
+  def addPlayer(p: Player): ToeBoard = {
+    val ret = new ToeBoard
+    ret.info = info
+    player1 match {
+      case None => ret.player1 = Some(p)
+      case _ => ret.player2 = Some(p)
+    }
+    ret
+  }
 
-
-  def -(other: ToeBoard): Seq[ToeDelta]
+  def -(other: ToeBoard): Seq[ToeDelta] = Nil
+  
   def render: NodeSeq =
   <span>
     <style>
