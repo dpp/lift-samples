@@ -12,20 +12,19 @@ import http._
 import util._
 import SHtml._
 
+import lib._
+
 import scala.actors.Actor
 import Actor._
 
-object MyId extends SessionVar(Helpers.nextFuncName)
-
-object MyName extends SessionVar[Box[String]](Empty) {
-  registerCleanupFunc(() => LobbyServer ! RemoveLurker(MyId))
+object MyName extends SessionVar[Box[Player]](Empty) {
+  registerCleanupFunc(() => is.foreach(who => LobbyServer ! RemoveLurker(who)))
 }
 
-object CurrentGameActor extends SessionVar[Box[CometActor]](Empty)
-
 class FrontMatter {
-  def render = (MyName.is, CurrentGameActor.is) match {
-    case (_, Full(_)) => <lift:comet type="TicTacGame" />
+  def render = 
+  (MyName.is, CurrentTicTacToeGameActor.is) match {
+    case (_, Full(_)) => <lift:comet type="ToeDisplay" />
     case (Full(_), _) => <lift:comet type="Lobby" />
     case _ => <lift:embed what="/templates-hidden/ask_name"/>
   }
@@ -40,41 +39,43 @@ class FrontMatter {
 
   private def testAndSetName(n: String) {
     if (n.trim.length > 1) {
-      MyName(Full(n.trim))
-      LobbyServer ! AddLurker(MyId, n.trim)
+      val p = Player(n.trim)
+      MyName(Full(p))
     }
   }
 }
 
-case class RemoveLurker(who: String)
-case class AddLurker(who: String, name: String)
-case class Add(who: Actor)
-case class Remove(who: Actor)
-case class Lurkers(x: List[(String, String)])
+case class RemoveLurker(who: Player)
+case class AddLurker(who: Player, actor: Actor)
+case class Lurkers(x: List[Player])
+case class PlayGame(server: TicTacToeGameActor)
 
 object LobbyServer extends Actor {
-  private var here: List[(String, String)] = Nil
-  private var listeners: List[Actor] = Nil
+  private var here: List[(Player, Actor)] = Nil
   this.start
 
-  private def updateAll = listeners.foreach(_ ! Lurkers(here))
+  private def updateAll = {
+    val msg = Lurkers(here.map(_._1))
+    here.foreach(_._2 ! msg)
+  }
 
   def act = loop {
     react {
-      case AddLurker(id, name) =>
-        here ::= (id, name)
+      case AddLurker(p, who) =>
+        here ::= p -> who
+        here = here match {
+          case (_, a1) :: (_, a2) :: rest =>
+            val ga = new TicTacToeGameActor
+            a1 ! PlayGame(ga)
+            a2 ! PlayGame(ga)
+            rest
+          case xs => xs
+        }
         updateAll
 
-        case RemoveLurker(id) =>
-          here = here.remove(_._1 == id)
-          updateAll
-
-        case Add(who) =>
-          listeners ::= who
-          who ! Lurkers(here)
-
-        case Remove(who) =>
-          listeners -= who
+      case RemoveLurker(p) =>
+        here.remove(_._1 == p)
+        updateAll
     }
   }
 }
