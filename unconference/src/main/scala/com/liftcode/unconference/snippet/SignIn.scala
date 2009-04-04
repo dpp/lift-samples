@@ -33,19 +33,19 @@ class SignIn extends StatefulSnippet {
 }
 
 object Login {
-  def login(r: RequestState) = {
+  def login() = {
     val from = S.referer.openOr("/")
     
     User.currentUser match {
       case Full(_) => // do nothing
       case _ => 
-      def testPwd(user: User, pwd: String): Can[Boolean] = 
+      def testPwd(user: User, pwd: String): Box[Boolean] = 
       if (user.password.match_?(pwd)) {
-        if (user.invalid_?) Failure(user.invalidReason, Empty, Nil)
+        if (user.invalid_?) Failure(user.invalidReason, Empty, Empty)
         else {User.logUserIn(user); Full(true)}
         
         //Full(true)
-      } else Failure("Password mis-match", Empty, Nil)
+      } else Failure("Password mis-match", Empty, Empty)
       
       (for (email <- S.param("username") ?~ "No Username";
       pwd <- S.param("password") ?~ "No Password";
@@ -65,7 +65,7 @@ object Login {
     Full(RedirectResponse(from))
   }
   
-  def logout(r: RequestState) = {
+  def logout() = {
     val from = S.referer.openOr("/")
     
     User.logoutCurrentUser

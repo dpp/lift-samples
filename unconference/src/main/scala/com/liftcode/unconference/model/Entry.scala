@@ -10,7 +10,7 @@ import java.util.regex.Pattern
 */
 object Entry extends Entry with KeyedMetaMapper[Long, Entry] {
   @transient
-  private var entries: Map[(String, String), Can[Entry]] = Map.empty
+  private var entries: Map[(String, String), Box[Entry]] = Map.empty
   
   private def addToEntries(e: Entry) {
     val key = (e.category.is, e.name.is)
@@ -18,12 +18,12 @@ object Entry extends Entry with KeyedMetaMapper[Long, Entry] {
     entries += (key -> Full(e))
   }
   
-  def locate(category: String, name: String): Can[Entry] = {
+  def locate(category: String, name: String): Box[Entry] = {
     val key = (category, name)
     entries.get(key) match {
       case Some(ret) => ret
       case _ => val ret = find(By(Entry.name, name), By(Entry.category, category),
-      MaxRows(1), OrderBy(createdAt, false))
+      MaxRows(1), OrderBy(createdAt, Ascending))
       entries += (key -> ret)
       ret
     }

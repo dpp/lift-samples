@@ -36,7 +36,7 @@ class Wiki {
     }
     <br/>
     {
-      SHtml.submit("Save", s => {revised.save; redirectTo("/"+cat+"/"+urlEncode(page))})
+      SHtml.submit("Save", () => {revised.save; redirectTo("/"+cat+"/"+urlEncode(page))})
     }
     </div>
   }) match {
@@ -92,7 +92,7 @@ class Wiki {
     Some("need_edit"))
   }
   
-  private def entry(cat: String, name: String, id: Can[String]): Can[Entry] = 
+  private def entry(cat: String, name: String, id: Box[String]): Box[Entry] = 
   id match {
     case Full(id) =>
     Entry.find(id).flatMap{
@@ -110,7 +110,7 @@ class Wiki {
         case Full(actual) =>
       <div class="wiki_out">
       {
-        TextileParser.toHtml(actual.text, Some(writeUrl(cat)))
+        TextileParser.toHtml(actual.text, Some(writeUrl(cat) _))
       }
       <br/>
       <br/>
@@ -133,7 +133,7 @@ class Wiki {
   def history: NodeSeq = {
     (for (cat <- S.param("category") ?~ "No category";
     page <- S.param("page") ?~ "No Page";
-    val actual = Entry.findAll(By(Entry.category, cat), By(Entry.name, page), OrderBy(Entry.createdAt, false))) yield {
+    val actual = Entry.findAll(By(Entry.category, cat), By(Entry.name, page), OrderBy(Entry.createdAt, Descending))) yield {
       actual match {
         case Nil => <b>No entries found for {page} in {cat}</b>
         case xs =>
