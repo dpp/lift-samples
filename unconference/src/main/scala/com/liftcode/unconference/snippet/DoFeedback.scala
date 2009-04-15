@@ -18,9 +18,9 @@ class DoFeedback extends StatefulSnippet {
   val fb = Feedback.create.author(User.currentUser).
   email(User.currentUser.map(_.email.is).openOr(""))
   
-  val referer: Can[String] = S.referer
+  val referer: Box[String] = S.referer
   
-  private def submitIt(ignore: String) {
+  private def submitIt() {
     fb.validate match {
       case Nil => S.notice("Thanks for your feedback!")
       fb.save

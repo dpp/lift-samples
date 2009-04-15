@@ -34,7 +34,7 @@ class Register extends StatefulSnippet {
   var pwd2_err = false
   var user: User = _
   
-  private def validate(ignore: String) {
+  private def validate() {
     if (firstName.length < 2) {firstName_err = true; error("First Name too short")}
     else firstName_err = false
     
@@ -84,7 +84,7 @@ class Register extends StatefulSnippet {
   def firstForm(body: NodeSeq): NodeSeq = 
   <form method="POST" action={S.uri}>
   {
-    SHtml.hidden(ignore => this.registerThisSnippet)
+    SHtml.hidden(() => this.registerThisSnippet)
   }
   {
   bind("register", body,

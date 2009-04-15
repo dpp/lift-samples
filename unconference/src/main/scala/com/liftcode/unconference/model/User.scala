@@ -9,16 +9,16 @@ import http._
 /**
 * The singleton that has methods for accessing the database
 */
-object User extends User with MetaMegaProtoUser[User, User with KeyedMetaMapper[Long, User]] {
+object User extends User with MetaMegaProtoUser[User] {
   override def dbTableName = "users" // define the DB table name
   
-  def superUser_? : Boolean = currentUser.map(_.superUser.is).openOr(false)
+  // def superUser_? : Boolean = currentUser.map(_.superUser.is).openOr(false)
   
-  def attendees: Response = {
+  def attendees: LiftResponse = {
     val top = "First\tLast\temail\tvalidated\n"
     val str = User.findAll.sort(_.lastName.toLowerCase < _.lastName.toLowerCase).
     map(u => u.firstName+"\t"+u.lastName+"\t"+u.email+"\t"+u.validated).mkString(top, "\n", "")
-    Response(str.getBytes("UTF-8"), "Content-Type" -> "text/plain" :: Nil, Nil, 200)
+    InMemoryResponse(str.getBytes("UTF-8"), "Content-Type" -> "text/plain" :: Nil, Nil, 200)
   }
 }
 
@@ -27,7 +27,7 @@ object User extends User with MetaMegaProtoUser[User, User with KeyedMetaMapper[
 */
 class User extends MegaProtoUser[User] {
   def getSingleton = User // what's the "meta" server
-  def primaryKeyField = id
+  /// def primaryKeyField = id
   
   object paypalId extends MappedUniqueId(this, 20) {
     override def dbIndexed_? = true

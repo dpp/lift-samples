@@ -16,7 +16,8 @@ object Feedback extends Feedback with KeyedMetaMapper[Long, Feedback] {
   
   def fireEmail(what: Feedback) {
     Mailer.sendMail(From("feedback@scalaliftoff.com"),Subject("[SlO] Feedback"), 
-    ReplyTo(what.email), BCC("feeder.of.the.bears@gmail.com"), To("feedback@scalaliftoff.com"), what.text)
+    ReplyTo(what.email), BCC("feeder.of.the.bears@gmail.com"), To("feedback@scalaliftoff.com"),
+    PlainPlusBodyType(what.text, "UTF-8"))
   }
 }
 
