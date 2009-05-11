@@ -68,6 +68,14 @@ object Entry extends Entry with KeyedMetaMapper[Long, Entry] {
   val areas = List(News, Sessions, Community, Wiki, Home)
   
   def editUrl(cat: String, name: String): String = "/"+cat+"/edit/"+urlEncode(name)
+
+  override def dbAddTable: Box[() => Unit] =
+  Full(addHomePage _)
+
+  private def addHomePage() {
+    Entry.create.name("index").category("home").save
+  }
+
 }
 
 /**
