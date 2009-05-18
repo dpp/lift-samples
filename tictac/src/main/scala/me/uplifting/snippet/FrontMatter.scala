@@ -18,7 +18,9 @@ import scala.actors.Actor
 import Actor._
 
 object MyName extends SessionVar[Box[Player]](Empty) {
-  registerCleanupFunc(() => is.foreach(who => LobbyServer ! RemoveLurker(who)))
+  override def onShutdown(session: LiftSession) {
+    is.foreach(who => LobbyServer ! RemoveLurker(who))
+  }
 }
 
 class FrontMatter {
