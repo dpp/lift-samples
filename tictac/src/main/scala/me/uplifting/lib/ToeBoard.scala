@@ -8,6 +8,7 @@ package me.uplifting.lib
  */
 
 import net.liftweb._
+import common._
 import http._
 import SHtml._
 import js._
@@ -22,8 +23,7 @@ import net.liftweb.http.js.jquery._
 import JqJE._
 
 import scala.xml._
-import scala.actors.Actor
-import Actor._
+import net.liftweb.actor._
 
 import snippet._
 
@@ -243,22 +243,18 @@ class ToeBoard extends CometState[ToeDelta, ToeBoard] {
 
 object CurrentTicTacToeGameActor extends SessionVar[Box[TicTacToeGameActor]](Empty)
 
-class TicTacToeGameActor extends Actor {
-  private var listeners: List[Actor] = Nil
+class TicTacToeGameActor extends LiftActor {
+  private var listeners: List[LiftActor] = Nil
   private var currentGame = ToeBoard.Empty
-  this.start
 
   private def updateListeners() {
     listeners.foreach(_ ! currentGame)
   }
 
-  def act = loop {
-    react {
+  def messageHandler =
+    {
       case Add(who) => listeners ::= who ; who ! currentGame
       case Remove(who) => listeners -= who
-        if (listeners.isEmpty) {
-          self.exit("No more listeners")
-        }
 
       case AddPlayer(who) =>
         currentGame = currentGame.addPlayer(who)
@@ -267,10 +263,9 @@ class TicTacToeGameActor extends Actor {
       case MarkCell(cell) => currentGame = currentGame.mark(cell)
         updateListeners()
     }
-  }
 }
 
-case class Add(who: Actor)
-case class Remove(who: Actor)
+case class Add(who: LiftActor)
+case class Remove(who: LiftActor)
 case class AddPlayer(who: Player)
 case class MarkCell(cell: Int)

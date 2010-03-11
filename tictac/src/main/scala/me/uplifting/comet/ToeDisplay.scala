@@ -8,6 +8,7 @@
 package me.uplifting.comet
 
 import net.liftweb._
+import common._
 import http._
 import util._
 import Helpers._

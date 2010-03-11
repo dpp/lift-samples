@@ -10,12 +10,12 @@ package me.uplifting.snippet
 import net.liftweb._
 import http._
 import util._
+import common._
 import SHtml._
 
 import lib._
 
-import scala.actors.Actor
-import Actor._
+import net.liftweb.actor._
 
 object MyName extends SessionVar[Box[Player]](Empty) {
   override def onShutdown(session: LiftSession) {
@@ -48,36 +48,34 @@ class FrontMatter {
 }
 
 case class RemoveLurker(who: Player)
-case class AddLurker(who: Player, actor: Actor)
+case class AddLurker(who: Player, actor: LiftActor)
 case class Lurkers(x: List[Player])
 case class PlayGame(server: TicTacToeGameActor)
 
-object LobbyServer extends Actor {
-  private var here: List[(Player, Actor)] = Nil
-  this.start
+object LobbyServer extends LiftActor {
+  private var here: List[(Player, LiftActor)] = Nil
 
   private def updateAll = {
     val msg = Lurkers(here.map(_._1))
     here.foreach(_._2 ! msg)
   }
 
-  def act = loop {
-    react {
+  def messageHandler = 
+    {
       case AddLurker(p, who) =>
         here ::= p -> who
-        here = here match {
-          case (_, a1) :: (_, a2) :: rest =>
-            val ga = new TicTacToeGameActor
-            a1 ! PlayGame(ga)
-            a2 ! PlayGame(ga)
-            rest
-          case xs => xs
-        }
-        updateAll
-
+      here = here match {
+        case (_, a1) :: (_, a2) :: rest =>
+          val ga = new TicTacToeGameActor
+        a1 ! PlayGame(ga)
+        a2 ! PlayGame(ga)
+        rest
+        case xs => xs
+      }
+      updateAll
+      
       case RemoveLurker(p) =>
         here.remove(_._1 == p)
-        updateAll
-    }
-  }
+      updateAll
+      }
 }
