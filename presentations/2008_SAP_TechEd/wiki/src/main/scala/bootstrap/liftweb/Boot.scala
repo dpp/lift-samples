@@ -1,6 +1,7 @@
 package bootstrap.liftweb
 
 import net.liftweb.util._
+import net.liftweb.common._
 import net.liftweb.http._
 import net.liftweb.sitemap._
 import net.liftweb.sitemap.Loc._
@@ -20,7 +21,7 @@ class Boot {
     LiftRules.addToPackages("sample")
     Schemifier.schemify(true, Log.infoF _, User, Wiki)
 
-    LiftRules.addRewriteBefore{
+    LiftRules.rewrite.prepend {
       case RewriteRequest(ParsePath("view" :: what :: Nil, _, _, _), _, _) =>
         RewriteResponse(List("view"), Map("name" -> what))
         
@@ -39,15 +40,15 @@ class Boot {
 
     LiftRules.setSiteMap(SiteMap(entries:_*))
 
-    LiftRules.addTemplateBefore(User.templates)
+    // LiftRules.addTemplateBefore(User.templates)
 
-    S.addAround(User.requestLoans)
+
   }
 }
 
 
 object DBVendor extends ConnectionManager {
-  def newConnection(name: ConnectionIdentifier): Can[Connection] = {
+  def newConnection(name: ConnectionIdentifier): Box[Connection] = {
     try {
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver")
       val dm = DriverManager.getConnection("jdbc:derby:lift_example;create=true")
